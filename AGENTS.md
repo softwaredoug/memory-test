@@ -13,13 +13,19 @@ You should use search_opencode_history to search past OpenCode agent sessions fo
 Be sure to run --help to get information on the options on how to filter information and select the best 
 results.
 
+Read [docs/search_tool.md](docs/search_tool.md) for more information on how to use the search tool.
+
 Each search result is a transcript
 - A human prompt
 - A list of agent responses and tool calls
 
-It's part of a *session* - basically the session is everything that happened with that chat context.
+It's part of a *session* - basically the session is everything that happened with that chat context. 
 
 A search result can also be a "system prompt" use case that starts a session
+
+## Diagnosing basic functionality
+
+You may be asked to run the search tool, get different bells and whistles, etc
 
 ## Gathering / labeling evidence
 
@@ -37,7 +43,7 @@ When you're given a question / prompt from the user, you should label the transc
 
 user_question, grade, classification_code, transcript_id, comment
 
-user_question: question provided to you, the agent
+user_question: question provided to you, the agent, with some modification allowed so it can be understood stanadlone
 grade (numerical grade, as below)
 classification_code (one of I, M, H, C)
 transcript_id (the id of the transcript as retrieved from the tool)
@@ -56,6 +62,10 @@ Destination file: functionality.csv
 
 In a seperate file, we need to know functional deficiencies in the tool, the information its able to retrieve, and specifically what its not able to retrieve
 
+This is more like a usage log, on a specific date, a given user query was serviced, we observed this functionality made it hard / different, we called the tool N times
+
+We want to track a couple of kinds of 'functional' problems
+
 ### Functional
 
 - Is the CLI lacking features that would help filter to the right context?
@@ -69,7 +79,7 @@ In a seperate file, we need to know functional deficiencies in the tool, the inf
 
 The format is simple CSV with the following columns:
 
-user_question, deficiency_type, deficiency_description
+timestamp, user_question, deficiency_type, deficiency_description, num_tool_calls
 
 deficiency_type a single letter code as follows:
 
@@ -78,6 +88,8 @@ deficiency_type a single letter code as follows:
 - O - Other deficiency
 
 With deficiency_description a narative description of the deficiency, and how it would help you solve the query.
+
+num_tool_calls is how many times the CLI was called as a proxy for output tokens
 
 
 ## Python scripts, etc to help
